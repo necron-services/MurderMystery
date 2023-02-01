@@ -1,0 +1,7 @@
+name: Murder Mystery
+version: '${project.version}'
+main: io.github.greenmc.murdermystery.Main
+api-version: 1.19
+softdepend: [ PlaceholderAPI, WorldGuard ]
+authors: [ Breakthrough, Despical ]
+description: Kill innocents as a murderer and win.
