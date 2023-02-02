@@ -2,7 +2,6 @@ package io.github.greenmc.murdermystery.arena;
 
 import io.github.greenmc.murdermystery.Main;
 import io.github.greenmc.murdermystery.user.User;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,6 +53,10 @@ public class ArenaRegistry {
 		if (user == null) return null;
 
 		return this.arenas.stream().filter(arena -> arena.isInArena(user)).findFirst().orElse(null);
+	}
+
+	public boolean isArena(final String arenaId) {
+		return arenaId != null && getArena(arenaId) != null;
 	}
 
 	public boolean isInArena(final User user) {
