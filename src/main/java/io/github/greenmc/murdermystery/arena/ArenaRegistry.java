@@ -81,6 +81,8 @@ public class ArenaRegistry {
 		}
 
 		for (final String id : section.getKeys(false)) {
+			if (id.equals("default")) continue;
+
 			final String path = String.format("instance.%s.", id);
 			final Arena arena = new Arena(id);
 
@@ -96,7 +98,7 @@ public class ArenaRegistry {
 			arena.setPlayerSpawnPoints(config.getStringList(path + "goldSpawnPoints").stream().map(LocationSerializer::fromString).collect(Collectors.toList()));
 
 			if (!arena.isReady()) {
-				plugin.getLogger().log(Level.WARNING, "Setup of arena {s} is not finished yet!", id);
+				plugin.getLogger().log(Level.WARNING, "Setup of arena ''{0}'' is not finished yet!", id);
 				return;
 			}
 		}

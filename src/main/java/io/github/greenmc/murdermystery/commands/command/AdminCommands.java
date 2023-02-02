@@ -139,6 +139,18 @@ public class AdminCommands extends AbstractCommand {
 	public void mmEditCommand(CommandArguments arguments) {
 		final User user = plugin.getUserManager().getUser(arguments.getSender());
 
-		new ArenaEditorGUI(plugin, user).showGUI();
+		if (arguments.isArgumentsEmpty()) {
+			user.sendMessage("admin-commands.provide-an-arena-name");
+			return;
+		}
+
+		final Arena arena = plugin.getArenaRegistry().getArena(arguments.getArgument(0));
+
+		if (arena == null) {
+			user.sendMessage("admin-commands.no-arena-found-with-that-name");
+			return;
+		}
+
+		new ArenaEditorGUI(plugin, user, arena).showGUI();
 	}
 }
