@@ -74,7 +74,11 @@
             <groupId>com.github.Despical</groupId>
             <artifactId>Commons</artifactId>
             <version>1.5.6</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.Despical</groupId>
+            <artifactId>CommandFramework</artifactId>
+            <version>1.1.6</version>
         </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
