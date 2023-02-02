@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * @author Despical
@@ -91,6 +92,8 @@ public class ArenaRegistry {
 			arena.setMaximumPlayers(config.getInt(path + "maximumPlayers"));
 			arena.setLobbyLocation(LocationSerializer.fromString(config.getString(path + "lobbyLocation")));
 			arena.setEndLocation(LocationSerializer.fromString(config.getString(path + "endLocation")));
+			arena.setPlayerSpawnPoints(config.getStringList(path + "playerSpawnPoints").stream().map(LocationSerializer::fromString).collect(Collectors.toList()));
+			arena.setPlayerSpawnPoints(config.getStringList(path + "goldSpawnPoints").stream().map(LocationSerializer::fromString).collect(Collectors.toList()));
 
 			if (!arena.isReady()) {
 				plugin.getLogger().log(Level.WARNING, "Setup of arena {s} is not finished yet!", id);

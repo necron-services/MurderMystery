@@ -30,6 +30,7 @@ public class Arena {
 	private boolean ready;
 	private String mapName;
 	private ArenaState arenaState = ArenaState.INACTIVE;
+	private List<Location> goldSpawnPoints, playerSpawnPoints;
 
 	public Arena(final @NotNull String id) {
 		this.id = id;
@@ -39,6 +40,8 @@ public class Arena {
 		this.detectives = new ArrayList<>();
 		this.spectators = new ArrayList<>();
 		this.deaths = new ArrayList<>();
+		this.goldSpawnPoints = new ArrayList<>();
+		this.playerSpawnPoints = new ArrayList<>();
 		this.arenaOptions = new EnumMap<>(ArenaOption.class);
 		this.gameLocations = new EnumMap<>(GameLocation.class);
 		this.scoreboardManager = new ScoreboardManager(this);
@@ -106,6 +109,22 @@ public class Arena {
 
 	public Location getLobbyLocation() {
 		return gameLocations.get(GameLocation.LOBBY);
+	}
+
+	public List<Location> getGoldSpawnPoints() {
+		return this.goldSpawnPoints;
+	}
+
+	public void setGoldSpawnPoints(final List<Location> goldSpawnPoints) {
+		this.goldSpawnPoints = goldSpawnPoints;
+	}
+
+	public List<Location> getPlayerSpawnPoints() {
+		return this.playerSpawnPoints;
+	}
+
+	public void setPlayerSpawnPoints(final List<Location> playerSpawnPoints) {
+		this.playerSpawnPoints = playerSpawnPoints;
 	}
 
 	public void setLobbyLocation(Location lobbyLocation) {
