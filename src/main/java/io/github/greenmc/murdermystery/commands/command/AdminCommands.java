@@ -7,7 +7,10 @@ import io.github.greenmc.murdermystery.handlers.setup.ArenaEditorGUI;
 import io.github.greenmc.murdermystery.user.User;
 import me.despical.commandframework.Command;
 import me.despical.commandframework.CommandArguments;
+import me.despical.commons.configuration.ConfigUtils;
+import me.despical.commons.serializer.LocationSerializer;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static me.despical.commandframework.Command.SenderType.*;
@@ -41,29 +44,39 @@ public class AdminCommands extends AbstractCommand {
 		final User user = plugin.getUserManager().getUser(arguments.getSender());
 
 		if (plugin.getArenaRegistry().isInArena(user)) {
-			user.sendMessage("can not do that in-game message");
+			user.sendMessage("admin-commands.cannot-do-that-ingame");
 			return;
 		}
 
 		if (arguments.isArgumentsEmpty()) {
-			user.sendMessage("no arg provided message");
+			user.sendRawMessage("admin-commands.provide-an-arena-name");
 			return;
 		}
 
 		final String arenaId = arguments.getArgument(0);
 
 		if (plugin.getArenaRegistry().isArena(arenaId)) {
-			user.sendMessage("arena already created message");
+			user.sendMessage("admin-commands.there-is-already-an-arena");
 			return;
 		}
 
+		final String path = String.format("instance.%s.", arenaId);
 		final Arena arena = new Arena(arenaId);
-
-		// implement arena data
 
 		plugin.getArenaRegistry().registerArena(arena);
 
-		user.sendMessage("arena created message");
+		arenaConfig.set(path + "mapName", arenaId);
+		arenaConfig.set(path + "minimumPlayers", 8);
+		arenaConfig.set(path + "maximumPlayers", 16);
+		arenaConfig.set(path + "ready", false);
+		arenaConfig.set(path + "lobbyLocation", LocationSerializer.SERIALIZED_LOCATION);
+		arenaConfig.set(path + "endLocation", LocationSerializer.SERIALIZED_LOCATION);
+		arenaConfig.set(path + "playerSpawnPoints", new ArrayList<>());
+		arenaConfig.set(path + "goldSpawnPoints", new ArrayList<>());
+
+		ConfigUtils.saveConfig(plugin, arenaConfig, "arena");
+
+		user.sendRawMessage("arena created message");
 	}
 
 	@Command(
@@ -77,29 +90,30 @@ public class AdminCommands extends AbstractCommand {
 		final User user = plugin.getUserManager().getUser(arguments.getSender());
 
 		if (plugin.getArenaRegistry().isInArena(user)) {
-			user.sendMessage("can not do that in-game message");
+			user.sendMessage("admin-commands.cannot-do-that-ingame");
 			return;
 		}
 
 		if (arguments.isArgumentsEmpty()) {
-			user.sendMessage("no arg provided message");
+			user.sendRawMessage("admin-commands.provide-an-arena-name");
 			return;
 		}
 
 		final String arenaId = arguments.getArgument(0);
 
-		if (plugin.getArenaRegistry().isArena(arenaId)) {
-			user.sendMessage("no arena found message");
+		if (!plugin.getArenaRegistry().isArena(arenaId)) {
+			user.sendMessage("admin-commands.no-arena-found-with-that-name");
 			return;
 		}
 
 		final Arena arena = plugin.getArenaRegistry().getArena(arenaId);
 
-		// delete arena configuration and stop it if needed when ArenaManager done
+		arenaConfig.set("instances." + arenaId, null);
+		ConfigUtils.saveConfig(plugin, arenaConfig, "arena");
 
 		plugin.getArenaRegistry().unregisterArena(arena);
 
-		user.sendMessage("arena deleted message");
+		user.sendMessage("admin-commands.deleted-arena-successfully", arenaId);
 	}
 
 	@Command(

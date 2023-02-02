@@ -1,4 +1,4 @@
-name: Murder Mystery
+name: MurderMystery
 version: '${project.version}'
 main: io.github.greenmc.murdermystery.Main
 api-version: 1.19

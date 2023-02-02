@@ -2,11 +2,16 @@ package io.github.greenmc.murdermystery.arena;
 
 import io.github.greenmc.murdermystery.Main;
 import io.github.greenmc.murdermystery.user.User;
+import me.despical.commons.configuration.ConfigUtils;
+import me.despical.commons.serializer.LocationSerializer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * @author Despical
@@ -21,7 +26,7 @@ public class ArenaRegistry {
 	@NotNull
 	private final Set<Arena> arenas;
 
-	public ArenaRegistry(final Main plugin) {
+	public ArenaRegistry(final @NotNull Main plugin) {
 		this.plugin = plugin;
 		this.arenas = new HashSet<>();
 
@@ -64,6 +69,33 @@ public class ArenaRegistry {
 	}
 
 	private void registerArenas() {
+		this.arenas.clear();
 
+		final FileConfiguration config = ConfigUtils.getConfig(plugin, "arena");
+		final ConfigurationSection section = config.getConfigurationSection("instance");
+
+		if (section == null) {
+			plugin.getLogger().log(Level.WARNING, "Couldn't find 'instance' section in arena.yml, delete the file to regenerate it!");
+			return;
+		}
+
+		for (final String id : section.getKeys(false)) {
+			final String path = String.format("instance.%s.", id);
+			final Arena arena = new Arena(id);
+
+			this.registerArena(arena);
+
+			arena.setReady(config.getBoolean(path + "ready"));
+			arena.setMapName(config.getString(path + "mapName"));
+			arena.setMinimumPlayers(config.getInt(path + "minimumPlayers"));
+			arena.setMaximumPlayers(config.getInt(path + "maximumPlayers"));
+			arena.setLobbyLocation(LocationSerializer.fromString(config.getString(path + "lobbyLocation")));
+			arena.setEndLocation(LocationSerializer.fromString(config.getString(path + "endLocation")));
+
+			if (!arena.isReady()) {
+				plugin.getLogger().log(Level.WARNING, "Setup of arena {s} is not finished yet!", id);
+				return;
+			}
+		}
 	}
 }

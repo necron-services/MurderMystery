@@ -22,6 +22,10 @@ public class User {
 		this.sendRawMessage(path); // not implemented yet
 	}
 
+	public void sendMessage(final String path, final String... params) {
+		this.sendRawMessage(path);
+	}
+
 	public void sendRawMessage(final String message) {
 		this.player.sendMessage(Strings.format(message));
 	}

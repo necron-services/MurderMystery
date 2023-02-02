@@ -8,7 +8,8 @@ import me.despical.commandframework.CommandFramework;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
+import java.io.File;
+import java.util.stream.Stream;
 
 public class Main extends JavaPlugin {
 
@@ -40,7 +41,7 @@ public class Main extends JavaPlugin {
 	private void setupConfigurationFiles() {
 		this.saveDefaultConfig();
 
-		Set.of("arena").forEach(fileName -> this.saveResource(fileName + ".yml", false));
+		Stream.of("arena").filter(fileName -> !new File(getDataFolder(),fileName + ".yml").exists()).forEach(fileName -> this.saveResource(fileName + ".yml", false));
 	}
 
 	@NotNull

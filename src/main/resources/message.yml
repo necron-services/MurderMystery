@@ -1,0 +1,6 @@
+admin-commands:
+  cannot-do-that-ingame: "&cYou can not do that while playing!"
+  provide-an-arena-name: "&cPlease provide an arena name!"
+  there-is-already-an-arena: "&cThere is already an arena with that name!"
+  no-arena-found-with-that-name: "&cNo arena found with that name!"
+  deleted-arena-successfully: "&eDeleted arena called &c%s successfully!"
