@@ -1,6 +1,7 @@
 package io.github.greenmc.murdermystery.user;
 
 import me.despical.commons.util.Strings;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -28,6 +29,10 @@ public class User {
 
 	public void sendRawMessage(final String message) {
 		this.player.sendMessage(Strings.format(message));
+	}
+
+	public Location getLocation() {
+		return this.player.getLocation();
 	}
 
 	public Player getPlayer() {

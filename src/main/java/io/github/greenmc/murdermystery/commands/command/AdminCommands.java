@@ -108,7 +108,7 @@ public class AdminCommands extends AbstractCommand {
 
 		final Arena arena = plugin.getArenaRegistry().getArena(arenaId);
 
-		arenaConfig.set("instances." + arenaId, null);
+		arenaConfig.set("instance." + arenaId, null);
 		ConfigUtils.saveConfig(plugin, arenaConfig, "arena");
 
 		plugin.getArenaRegistry().unregisterArena(arena);
